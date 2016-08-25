@@ -9,4 +9,5 @@ pygame.mixer.music.play()
 while pygame.mixer.music.get_busy():
     sys.stdout.write('%d\r' % pygame.mixer.music.get_pos())
     time.sleep(0.01)
+
 pygame.mixer.quit()
