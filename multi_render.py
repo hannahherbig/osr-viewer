@@ -96,22 +96,28 @@ tail = args.tail
 radius = args.radius
 
 files = glob(join(pathname, '*.osr'))
-colors = [pick_color() for _ in files]
+if len(files) == 0:
+    sys.exit('no replays to read')
+if len(files) == 1:
+    colors = [WHITE]
+else:
+    colors = [pick_color() for _ in files]
+
 pointss = [parse(name) for name in files]
 
 pygame.mixer.pre_init(44100)
 pygame.init()
 screen = pygame.display.set_mode((512*2, 384*2))
+pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
 pygame.mixer.music.load(*glob(join(pathname, '*.mp3')))
 pygame.mixer.music.play()
 pygame.mixer.music.set_volume(0.5)
 clock = pygame.time.Clock()
 
 last_pos = 0
+done = False
 
 screen.fill(BLACK)
-
-done = False
 
 while not done and pygame.mixer.music.get_busy():
     for event in pygame.event.get():
