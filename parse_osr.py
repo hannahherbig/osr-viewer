@@ -82,6 +82,17 @@ with open(path, 'rb') as f:
     n300, n100, n50, ngeki, nkatu, nmiss, score, combo, perfect, mods = struct.unpack('<HHHHHHIH?I', f.read(23))
     life_bar = parse_string(f) # ms|life
     timestamp, length = struct.unpack('<QI', f.read(12))
+
+    data = lzma.decompress(f.read(length)).decode()
+    last_w = 0
+    for record in data.split(','):
+        if record:
+            w, x, y, z = record.split('|')
+            w, z = int(w), int(z)
+            x, y = float(x), float(y)
+            print('%10d %10.4f %10.4f %s' % (w, x, y, keys(z)))
+            last_w = w
+
     print(dedent('''
         Game mode   : %s
         Version     : %d
@@ -104,22 +115,3 @@ with open(path, 'rb') as f:
     ''') % (MODES[mode], version, beatmap_md5, player_name,
         replay_md5, n300, n100, n50, ngeki, nkatu, nmiss, score,
         combo, perfect, shortmods(mods), life_bar, timestamp, length))
-
-    data = lzma.decompress(f.read(length)).decode()
-    last_w = 0
-    for record in data.split(','):
-        if record:
-            w, x, y, z = record.split('|')
-            w, z = int(w), int(z)
-            x, y = float(x), float(y)
-            sys.stdout.write('%10d %10.4f %10.4f %s\r' % (w, x, y, keys(z)))
-            sys.stdout.flush()
-            if last_w > 0:
-                time.sleep(last_w/1000)
-            else:
-                print()
-            last_w = w
-
-    # w|x|y|z
-    # w = ms since previous
-    # z = keys pressed
