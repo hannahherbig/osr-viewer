@@ -72,7 +72,7 @@ def keys(n):
                      ('M2' if m2 else '  '),
                      ('SMOKE' if smoke else '     ')])
 
-path = r'''C:\Users\notan\AppData\Local\osu!\Replays\Cookiezi - xi - Blue Zenith [FOUR DIMENSIONS] (2016-01-02) Osu.osr'''
+path = sys.argv[1]
 
 with open(path, 'rb') as f:
     mode, version = struct.unpack('<BI', f.read(5))
@@ -106,6 +106,7 @@ with open(path, 'rb') as f:
         combo, perfect, shortmods(mods), life_bar, timestamp, length))
 
     data = lzma.decompress(f.read(length)).decode()
+    last_w = 0
     for record in data.split(','):
         if record:
             w, x, y, z = record.split('|')
@@ -113,10 +114,11 @@ with open(path, 'rb') as f:
             x, y = float(x), float(y)
             sys.stdout.write('%10d %10.4f %10.4f %s\r' % (w, x, y, keys(z)))
             sys.stdout.flush()
-            if w > 0:
-                time.sleep(w/1000)
+            if last_w > 0:
+                time.sleep(last_w/1000)
             else:
-                print
+                print()
+            last_w = w
 
     # w|x|y|z
     # w = ms since previous
