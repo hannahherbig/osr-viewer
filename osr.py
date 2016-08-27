@@ -42,9 +42,9 @@ def parse_string(f):
         length = parse_uleb128(f)
         return f.read(length).decode()
 
-ReplayPoint = namedtuple('ReplayPoint', 'x y z')
+ReplayPoint = namedtuple('ReplayPoint', 'x y buttons')
 
-class Keys:
+class Buttons:
     def __init__(self, z):
         self.z = z
         self.k1 = z & 5 == 5
@@ -91,7 +91,7 @@ class Replay:
                 w = int(w)
                 t += w
                 if t > last_t:
-                    e = ReplayPoint(float(x), float(y), int(z))
+                    e = ReplayPoint(float(x), float(y), Buttons(int(z)))
                     self.replay[last_t:t] = [e] * w
                 last_t = t
 

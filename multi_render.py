@@ -7,18 +7,6 @@ import pygame.gfxdraw
 import random
 import argparse
 import osr
-from collections import deque
-
-class Clock:
-    def __init__(self):
-        self.times = deque(maxlen=10)
-
-    def tick(self):
-        self.times.append(time.clock())
-
-    def get_fps(self):
-        t = self.times
-        return len(t)/(t[-1] - t[0])
 
 BLACK = (  0,   0,   0)
 GRAY  = (100, 100, 100)
@@ -62,7 +50,7 @@ for r in replays:
 print('read %d replays' % len(replays))
 
 HEIGHT = 768
-KEYSIZE = min(25, HEIGHT // len(replays))
+KEYSIZE = min(15, HEIGHT // len(replays))
 WIDTH = 1024+5*KEYSIZE
 
 pygame.mixer.pre_init(44100)
@@ -72,7 +60,7 @@ pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
 pygame.mixer.music.load(*glob(join(pathname, '*.mp3')))
 pygame.mixer.music.play()
 pygame.mixer.music.set_volume(0.5)
-clock = Clock()
+clock = pygame.time.Clock()
 
 UPDATE_FPS = pygame.USEREVENT
 pygame.time.set_timer(UPDATE_FPS, 100)
@@ -147,8 +135,7 @@ while not done and pygame.mixer.music.get_busy():
     for i, replay in enumerate(replays):
         p = replay[current_pos]
         y = i*KEYSIZE
-        k = osr.Keys(p.z)
-        for j, o in enumerate(k):
+        for j, o in enumerate(p.buttons):
             x = 1024+j*KEYSIZE
             rect = (x, y, KEYSIZE, KEYSIZE)
             if o:
