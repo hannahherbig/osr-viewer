@@ -23,11 +23,13 @@ parser = argparse.ArgumentParser(description='osu! replay visualizer')
 parser.add_argument('path', help='folder containing replays and mp3')
 parser.add_argument('-t', '--tail', help='tail length', type=int, default=100)
 parser.add_argument('-r', '--radius', help='circle radius', type=int, default=5)
+parser.add_argument('-n', '--no-wipe', help="don't wipe the screen each frame", dest='wipe', action='store_false')
 args = parser.parse_args()
 
 pathname = args.path
 tail = args.tail
 radius = args.radius
+wipe = args.wipe
 
 files = glob(join(pathname, '*.osr'))
 if len(files) == 0:
@@ -89,6 +91,8 @@ while not done and pygame.mixer.music.get_busy():
                 tail += 10
             elif event.button == 5: # scroll down
                 tail = max(0, tail - 10)
+            if event.button == 2: # middle mouse button
+                wipe = not wipe
             pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
 
         elif event.type == UPDATE_FPS:
@@ -96,7 +100,8 @@ while not done and pygame.mixer.music.get_busy():
 
     clock.tick()
     current_pos = pygame.mixer.music.get_pos()
-    screen.fill(BLACK)
+    if wipe:
+        screen.fill(BLACK)
 
     if tail:
         for replay in replays:
