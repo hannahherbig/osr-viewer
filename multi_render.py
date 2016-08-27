@@ -119,6 +119,9 @@ pygame.mixer.music.play()
 pygame.mixer.music.set_volume(0.5)
 clock = pygame.time.Clock()
 
+UPDATE_FPS = pygame.USEREVENT
+pygame.time.set_timer(UPDATE_FPS, 1000)
+
 last_pos = 0
 done = False
 
@@ -145,11 +148,11 @@ while not done and pygame.mixer.music.get_busy():
                 tail = max(0, tail - 10)
             pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
 
+        elif event.type == UPDATE_FPS:
+            sys.stderr.write('%5.0f fps\r' % clock.get_fps())
+
     clock.tick()
-    sys.stderr.write('%5.0f fps\r' % clock.get_fps())
-
     current_pos = pygame.mixer.music.get_pos()
-
     screen.fill(BLACK)
 
     if tail:
