@@ -45,6 +45,8 @@ def parse_string(f):
 ReplayPoint = namedtuple('ReplayPoint', 'x y buttons')
 
 class Buttons:
+    __slots__ = ['z', 'k1', 'k2', 'm1', 'm2', 'smoke']
+
     def __init__(self, z):
         self.z = z
         self.k1 = z & 5 == 5
@@ -68,13 +70,18 @@ class Buttons:
                           ('SMOKE' if self.smoke else '     ')])
 
 class Replay:
+    __slots__ = ['mode', 'version', 'beatmap_hash', 'player', 'replay_hash',
+                 'n300', 'n100', 'n50', 'ngeki', 'nkatu', 'nmiss', 'score',
+                 'combo', 'perfect', 'mods', 'life_events', 'timestamp',
+                 'length', 'replay', 'color']
+
     def read_file(self, f):
         self.mode, self.version = struct.unpack('<BI', f.read(5))
         assert self.mode == 0, "%s support not added yet" % MODES[self.mode]
         self.beatmap_hash = parse_string(f)
         self.player = parse_string(f)
         self.replay_hash = parse_string(f)
-        self.n300, self.n100, self.n50, self.ngeki, self.ngaku, self.nmiss, \
+        self.n300, self.n100, self.n50, self.ngeki, self.nkatu, self.nmiss, \
             self.score, self.combo, self.perfect, self.mods = \
             struct.unpack('<HHHHHHIH?I', f.read(23))
         self.life_events = []
@@ -90,7 +97,7 @@ class Replay:
                 w, x, y, z = rec.split('|')
                 w = int(w)
                 t += w
-                if t > last_t:
+                if w > 0:
                     e = ReplayPoint(float(x), float(y), Buttons(int(z)))
                     self.replay[last_t:t] = [e] * w
                 last_t = t
@@ -106,10 +113,10 @@ class Replay:
             return self.replay[t]
         return self.replay[-1]
 
-    def _sort_key(self):
+    def _key(self):
         return (self.score, -self.timestamp, self.player)
 
-    def __lt__(self, other): return self._sort_key() < other._sort_key()
+    def __lt__(self, other): return self._key() < other._key()
 
 def read_file(f):
     if isinstance(f, str):

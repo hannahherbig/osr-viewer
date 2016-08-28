@@ -17,7 +17,8 @@ def pick_color():
 
 def quit():
     pygame.quit()
-    sys.exit()
+    print('\n')
+    sys.exit(42)
 
 parser = argparse.ArgumentParser(description='osu! replay visualizer')
 parser.add_argument('path', help='folder containing replays and mp3')
@@ -31,7 +32,7 @@ tail = args.tail
 radius = args.radius
 wipe = args.wipe
 
-files = glob(join(pathname, '*.osr'))
+files = glob(join(pathname, '**/*.osr'), recursive=True)
 if len(files) == 0:
     sys.exit('no replays to read')
 
@@ -68,19 +69,18 @@ UPDATE_FPS = pygame.USEREVENT
 pygame.time.set_timer(UPDATE_FPS, 100)
 
 last_pos = 0
-done = False
 
 screen.fill(BLACK)
 
-while not done and pygame.mixer.music.get_busy():
+while pygame.mixer.music.get_busy():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
+            quit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                done = True
+                quit()
             elif event.mod & pygame.KMOD_CTRL and event.key == pygame.K_c:
-                done = True
+                quit()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1: # left mouse button
@@ -109,21 +109,25 @@ while not done and pygame.mixer.music.get_busy():
                 pointlist = []
             last_point = None
 
-            for pos in range(max(current_pos-tail, 0), min(len(replay), current_pos)):
-                p = replay[pos]
-                y = p.y
-                if replay.has_mod(16): # hr
-                    y = 384 - y
-                x, y = p.x*2, y*2
-                point = x, y
-                if 0 < x < WIDTH and 0 < y < HEIGHT:
-                    if last_point != point:
-                        if tail:
-                            pointlist.append(point)
-                        last_point = point
+            events = replay.replay
+            l = len(events)
+
+            for pos in range(max(current_pos-tail, 0), min(l, current_pos)):
+                if pos < l:
+                    p = events[pos]
+                    y = p.y
+                    if replay.has_mod(16): # hr
+                        y = 384 - y
+                    x, y = p.x*2, y*2
+                    point = x, y
+                    if 0 < x < WIDTH and 0 < y < HEIGHT:
+                        if last_point != point:
+                            if tail:
+                                pointlist.append(point)
+                            last_point = point
 
             if tail and len(pointlist) > 1:
-                pygame.draw.aalines(screen, replay.color, False, pointlist)
+                pygame.draw.lines(screen, replay.color, False, pointlist)
 
     if radius:
         for replay in replays:
@@ -135,7 +139,7 @@ while not done and pygame.mixer.music.get_busy():
                 x, y = int(p.x*2), int(y*2)
                 if 0 < x < WIDTH and 0 < y < HEIGHT:
                     pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)
-                    pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
+                    # pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
 
     for i, replay in enumerate(replays):
         p = replay[current_pos]
