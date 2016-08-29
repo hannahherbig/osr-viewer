@@ -111,12 +111,13 @@ while pygame.mixer.music.get_busy():
 
             events = replay.replay
             l = len(events)
+            hr = replay.has_mod(16)
 
             for pos in range(max(current_pos-tail, 0), min(l, current_pos)):
                 if pos < l:
                     p = events[pos]
                     y = p.y
-                    if replay.has_mod(16): # hr
+                    if hr:
                         y = 384 - y
                     x, y = p.x*2, y*2
                     point = x, y
