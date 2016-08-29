@@ -117,8 +117,8 @@ while pygame.mixer.music.get_busy():
                 if pos < l:
                     p = events[pos]
                     y = p.y
-                    # if hr:
-                    #     y = 384 - y
+                    if hr:
+                        y = 384 - y
                     x, y = p.x*2, y*2
                     point = x, y
                     if 0 < x < WIDTH and 0 < y < HEIGHT:
@@ -135,8 +135,8 @@ while pygame.mixer.music.get_busy():
             if current_pos < len(replay):
                 p = replay[current_pos]
                 y = p.y
-                # if replay.has_mod(16): # hr
-                #     y = 384 - y
+                if replay.has_mod(16): # hr
+                    y = 384 - y
                 x, y = int(p.x*2), int(y*2)
                 if 0 < x < WIDTH and 0 < y < HEIGHT:
                     pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)

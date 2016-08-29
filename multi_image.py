@@ -95,7 +95,7 @@ for frame in range(frames):
                     last_point = point
 
             if tail and len(pointlist) > 1:
-                draw.line(pointlist, replay.color)
+                draw.line(pointlist, replay.color, 2)
 
     if radius:
         for replay in replays:
@@ -106,7 +106,7 @@ for frame in range(frames):
             x *= 2
             y *= 2
 
-            draw.ellipse((x-radius, y-radius, x+radius, y+radius), replay.color)
+            draw.ellipse((x-radius, y-radius, x+radius, y+radius), replay.color, BLACK)
 
     for i, replay in enumerate(replays):
         p = replay[current_pos]
