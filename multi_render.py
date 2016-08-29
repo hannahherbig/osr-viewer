@@ -16,8 +16,8 @@ def pick_color():
     return tuple(random.randrange(64, 256) for i in range(3))
 
 def quit():
-    pygame.quit()
     print('\n')
+    pygame.quit()
     sys.exit(42)
 
 parser = argparse.ArgumentParser(description='osu! replay visualizer')
@@ -53,8 +53,8 @@ for r in replays:
 print('read %d replays' % len(replays))
 
 HEIGHT = 768
-KEYSIZE = min(15, HEIGHT // len(replays))
-WIDTH = 1024+5*KEYSIZE
+WIDTH = 1366
+KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(replays))
 
 pygame.mixer.pre_init(44100)
 pygame.init()
@@ -117,8 +117,8 @@ while pygame.mixer.music.get_busy():
                 if pos < l:
                     p = events[pos]
                     y = p.y
-                    if hr:
-                        y = 384 - y
+                    # if hr:
+                    #     y = 384 - y
                     x, y = p.x*2, y*2
                     point = x, y
                     if 0 < x < WIDTH and 0 < y < HEIGHT:
@@ -135,8 +135,8 @@ while pygame.mixer.music.get_busy():
             if current_pos < len(replay):
                 p = replay[current_pos]
                 y = p.y
-                if replay.has_mod(16): # hr
-                    y = 384 - y
+                # if replay.has_mod(16): # hr
+                #     y = 384 - y
                 x, y = int(p.x*2), int(y*2)
                 if 0 < x < WIDTH and 0 < y < HEIGHT:
                     pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)
@@ -146,12 +146,8 @@ while pygame.mixer.music.get_busy():
         p = replay[current_pos]
         y = i*KEYSIZE
         for j, o in enumerate(p.buttons):
-            x = 1024+j*KEYSIZE
-            rect = (x, y, KEYSIZE, KEYSIZE)
-            if o:
-                screen.fill(replay.color, rect)
-            else:
-                screen.fill(BLACK, rect)
+            x = WIDTH-KEYSIZE*5+j*KEYSIZE
+            screen.fill(replay.color if o else BLACK, (x, y, KEYSIZE, KEYSIZE))
 
     last_pos = current_pos
 
