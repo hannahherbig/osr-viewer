@@ -56,6 +56,13 @@ HEIGHT = 768
 WIDTH = 1366
 KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(replays))
 
+# Only works with Height of 768 and Width of 1366 if you want different size you will have to work out yourself
+# This Change Centers the play on the window just like in Osu client
+# Helps with easy overlay for video
+X_CHANGE = 273
+Y_CHANGE = 89
+SCALE = 1.551
+
 pygame.mixer.pre_init(44100)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -119,7 +126,7 @@ while pygame.mixer.music.get_busy():
                     y = p.y
                     if hr:
                         y = 384 - y
-                    x, y = p.x*2, y*2
+                    x, y = ((p.x + X_CHANGE/SCALE)*SCALE), ((y + Y_CHANGE/SCALE)*SCALE)
                     point = x, y
                     if 0 < x < WIDTH and 0 < y < HEIGHT:
                         if last_point != point:
@@ -137,7 +144,7 @@ while pygame.mixer.music.get_busy():
                 y = p.y
                 if replay.has_mod(16): # hr
                     y = 384 - y
-                x, y = int(p.x*2), int(y*2)
+                x, y = int(((p.x + X_CHANGE/SCALE)*SCALE)), int(((y + Y_CHANGE/SCALE)*SCALE))
                 if 0 < x < WIDTH and 0 < y < HEIGHT:
                     pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)
                     # pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
