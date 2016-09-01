@@ -5,7 +5,7 @@
 This is a few things I was messing around with the osu! replay format and
 pygame. There's also a sort of library in `osr.py` for reading the maps.
 
-I made this with Python 3.5 and `pygame` 1.9.2b1 on Windows, and I haven't
+I made this with `Python 3.5` and `pygame 1.9.2b1` on Windows, and I haven't
 tested it elsewhere yet. But it might work.
 
 ## multi_render.py
