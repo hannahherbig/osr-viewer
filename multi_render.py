@@ -147,7 +147,7 @@ while pygame.mixer.music.get_busy():
                 x, y = int(((p.x + X_CHANGE/SCALE)*SCALE)), int(((y + Y_CHANGE/SCALE)*SCALE))
                 if 0 < x < WIDTH and 0 < y < HEIGHT:
                     pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)
-                    # pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
+                    pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
 
     for i, replay in enumerate(replays):
         p = replay[current_pos]
