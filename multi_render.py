@@ -134,18 +134,14 @@ while pygame.mixer.music.get_busy():
         color = state.color
         while r and r[0].t <= pos:
             p = r.popleft()
-            state.x, state.y = x, y = p.x, p.y
-            state.z = p.z
-            circles.append((scale(x, y), color))
+            state.x, state.y, state.z = p.x, p.y, p.z
+            circles.append((scale(state.x, state.y), color))
             trail.append(p)
+        else:
+            circles.append((scale(state.x, state.y), color))
         while trail and (pos - trail[0].t) > tail:
             trail.popleft()
         points = [scale(p.x, p.y) for p in trail]
-        if trail:
-            p = trail[-1]
-            d = (scale(p.x, p.y), color)
-            if d not in circles:
-                circles.append(d)
         if len(points) > 1:
             lines.append((points, color))
         y = i * KEYSIZE
@@ -153,16 +149,18 @@ while pygame.mixer.music.get_busy():
             x = WIDTH - KEYSIZE * 5 + j * KEYSIZE
             rects.append(((x, y, KEYSIZE, KEYSIZE), color if o else BLACK))
 
-    for points, color in lines:
-        pygame.draw.lines(screen, color, False, points)
+    if tail:
+        for points, color in lines:
+            pygame.draw.lines(screen, color, False, points)
 
-    for (x, y), color in circles:
-        x, y = int(x), int(y)
-        pygame.gfxdraw.filled_circle(screen, x, y, radius, color)
-        pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
+    if radius:
+        for (x, y), color in circles:
+            x, y = int(x), int(y)
+            pygame.gfxdraw.filled_circle(screen, x, y, radius, color)
+            pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
 
     for rect, color in rects:
-        screen.fill(color, rect)
+        pygame.draw.rect(screen, color, rect)
 
     pygame.display.flip()
 
