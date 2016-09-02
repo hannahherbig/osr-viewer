@@ -1,9 +1,11 @@
+import pygame
+import pygame.gfxdraw
+from recordclass import recordclass
 import time
 import sys
 from glob import glob
 from os.path import join
-import pygame
-import pygame.gfxdraw
+from collections import deque
 import random
 import argparse
 import osr
@@ -39,9 +41,7 @@ if len(files) == 0:
 replays = []
 
 for name in files:
-    replay = osr.read_file(name)
-    # this is hacky but whatever
-    replay.color = WHITE if len(files) == 1 else pick_color()
+    replay = osr.read_file(name, True)
     replays.append(replay)
 
 replays.sort()
@@ -52,9 +52,20 @@ for r in replays:
     n -= 1
 print('read %d replays' % len(replays))
 
+state = recordclass('state', 'replay color x y z trail')
+states = []
+
+for replay in replays:
+    # we don't need anything else on the replay object so remove the references
+    replay = replay.replay
+    color = WHITE if len(replays) == 1 else pick_color()
+    states.append(state(replay, color, 0, 0, 0, deque()))
+
+del replays
+
 HEIGHT = 768
 WIDTH = 1366
-KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(replays))
+KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(states))
 
 # Only works with Height of 768 and Width of 1366 if you want different size you will have to work out yourself
 # This Change Centers the play on the window just like in Osu client
@@ -62,6 +73,9 @@ KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(replays))
 X_CHANGE = 273
 Y_CHANGE = 89
 SCALE = 1.551
+
+def scale(x, y):
+    return (x + X_CHANGE / SCALE) * SCALE, (y + Y_CHANGE / SCALE) * SCALE
 
 pygame.mixer.pre_init(44100)
 pygame.init()
@@ -106,57 +120,49 @@ while pygame.mixer.music.get_busy():
             sys.stderr.write('%5.0f fps\r' % clock.get_fps())
 
     clock.tick()
-    current_pos = pygame.mixer.music.get_pos()
+    pos = pygame.mixer.music.get_pos()
     if wipe:
         screen.fill(BLACK)
 
-    if tail:
-        for replay in replays:
-            if tail:
-                pointlist = []
-            last_point = None
+    lines = []
+    circles = []
+    rects = []
 
-            events = replay.replay
-            l = len(events)
-            hr = replay.has_mod(16)
+    for i, state in enumerate(states):
+        r = state.replay
+        trail = state.trail
+        color = state.color
+        while r and r[0].t <= pos:
+            p = r.popleft()
+            state.x, state.y = x, y = p.x, p.y
+            state.z = p.z
+            circles.append((scale(x, y), color))
+            trail.append(p)
+        while trail and (pos - trail[0].t) > tail:
+            trail.popleft()
+        points = [scale(p.x, p.y) for p in trail]
+        if trail:
+            p = trail[-1]
+            d = (scale(p.x, p.y), color)
+            if d not in circles:
+                circles.append(d)
+        if len(points) > 1:
+            lines.append((points, color))
+        y = i * KEYSIZE
+        for j, o in enumerate(osr.keys(state.z)):
+            x = WIDTH - KEYSIZE * 5 + j * KEYSIZE
+            rects.append(((x, y, KEYSIZE, KEYSIZE), color if o else BLACK))
 
-            for pos in range(max(current_pos-tail, 0), min(l, current_pos)):
-                if pos < l:
-                    p = events[pos]
-                    y = p.y
-                    if hr:
-                        y = 384 - y
-                    x, y = ((p.x + X_CHANGE/SCALE)*SCALE), ((y + Y_CHANGE/SCALE)*SCALE)
-                    point = x, y
-                    if 0 < x < WIDTH and 0 < y < HEIGHT:
-                        if last_point != point:
-                            if tail:
-                                pointlist.append(point)
-                            last_point = point
+    for points, color in lines:
+        pygame.draw.lines(screen, color, False, points)
 
-            if tail and len(pointlist) > 1:
-                pygame.draw.lines(screen, replay.color, False, pointlist)
+    for (x, y), color in circles:
+        x, y = int(x), int(y)
+        pygame.gfxdraw.filled_circle(screen, x, y, radius, color)
+        pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
 
-    if radius:
-        for replay in replays:
-            if current_pos < len(replay):
-                p = replay[current_pos]
-                y = p.y
-                if replay.has_mod(16): # hr
-                    y = 384 - y
-                x, y = int(((p.x + X_CHANGE/SCALE)*SCALE)), int(((y + Y_CHANGE/SCALE)*SCALE))
-                if 0 < x < WIDTH and 0 < y < HEIGHT:
-                    pygame.gfxdraw.filled_circle(screen, x, y, radius, replay.color)
-                    pygame.gfxdraw.aacircle(screen, x, y, radius, BLACK)
-
-    for i, replay in enumerate(replays):
-        p = replay[current_pos]
-        y = i*KEYSIZE
-        for j, o in enumerate(p.buttons):
-            x = WIDTH-KEYSIZE*5+j*KEYSIZE
-            screen.fill(replay.color if o else BLACK, (x, y, KEYSIZE, KEYSIZE))
-
-    last_pos = current_pos
+    for rect, color in rects:
+        screen.fill(color, rect)
 
     pygame.display.flip()
 

@@ -25,7 +25,9 @@ def parse_string(f):
         return f.read(length).decode()
 
 MODES = ['osu!', 'Taiko', 'Catch the Beat', 'osu!mania']
-SHORTMODS = ['', 'NF', 'EZ', '', 'HD', 'HR', 'SD', 'DT', 'RX', 'HT', 'NC', 'FL']
+SHORTMODS = [None, 'NF', 'EZ', None, 'HD', 'HR', 'SD', 'DT', 'RX', 'HT', 'NC',
+             'FL', 'AO', 'SO', 'AP', 'PF', '4K', '5K', '6K', '7K', '8K', 'FI',
+             'RD', None, 'TP', '9K', 'CO', '1K', '3K', '2K']
 MODS = ['None', 'NoFail', 'Easy', 'NoVideo', 'Hidden', 'HardRock',
         'SuddenDeath', 'DoubleTime', 'Relax', 'HalfTime', 'NightCore',
         'Flashlight', 'Autoplay', 'SpunOut', 'Autopilot', 'Perfect', 'Key4',

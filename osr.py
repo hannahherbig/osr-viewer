@@ -1,6 +1,6 @@
 import struct
 import lzma
-from collections import namedtuple
+from collections import namedtuple, deque
 
 MODES = ['osu!', 'Taiko', 'Catch the Beat', 'osu!mania']
 SHORTMODS = [None, 'NF', 'EZ', None, 'HD', 'HR', 'SD', 'DT', 'RX', 'HT', 'NC',
@@ -42,32 +42,20 @@ def parse_string(f):
         length = parse_uleb128(f)
         return f.read(length).decode()
 
-ReplayPoint = namedtuple('ReplayPoint', 'x y buttons')
+def each_bit(n, count):
+    for x in range(count):
+        yield n & (1 << x)
 
-class Buttons:
-    __slots__ = ['z', 'k1', 'k2', 'm1', 'm2', 'smoke']
+def keys(z):
+    k1 = z & 5 == 5
+    k2 = z & 10 == 10
+    yield k1
+    yield k2
+    yield not k1 and z & 1 == 1
+    yield not k2 and z & 2 == 2
+    yield z & 16 == 16
 
-    def __init__(self, z):
-        self.z = z
-        self.k1 = z & 5 == 5
-        self.k2 = z & 10 == 10
-        self.m1 = not self.k1 and z & 1 == 1
-        self.m2 = not self.k2 and z & 2 == 2
-        self.smoke = z & 16 == 16
-
-    def __iter__(self):
-        yield self.k1
-        yield self.k2
-        yield self.m1
-        yield self.m2
-        yield self.smoke
-
-    def __str__(self):
-        return  ' '.join([('K1' if self.k1 else '  '),
-                          ('K2' if self.k2 else '  '),
-                          ('M1' if self.m1 else '  '),
-                          ('M2' if self.m2 else '  '),
-                          ('SMOKE' if self.smoke else '     ')])
+ReplayPoint = namedtuple('ReplayPoint', 't x y z')
 
 class Replay:
     __slots__ = ['mode', 'version', 'beatmap_hash', 'player', 'replay_hash',
@@ -75,7 +63,7 @@ class Replay:
                  'combo', 'perfect', 'mods', 'life_events', 'timestamp',
                  'length', 'replay', 'color']
 
-    def read_file(self, f):
+    def read_file(self, f, flip_hr=False):
         self.mode, self.version = struct.unpack('<BI', f.read(5))
         assert self.mode == 0, "%s support not added yet" % MODES[self.mode]
         self.beatmap_hash = parse_string(f)
@@ -84,23 +72,24 @@ class Replay:
         self.n300, self.n100, self.n50, self.ngeki, self.nkatu, self.nmiss, \
             self.score, self.combo, self.perfect, self.mods = \
             struct.unpack('<HHHHHHIH?I', f.read(23))
-        self.life_events = []
+        self.life_events = deque()
         for rec in parse_string(f).split(','):
             if rec:
                 u, v = rec.split('|')
                 self.life_events.append((int(u), float(v)))
         self.timestamp, self.length = struct.unpack('<QI', f.read(12))
-        self.replay = []
-        last_t = t = 0
+        self.replay = replay = deque()
+        flip = flip_hr and self.has_mod(16)
+        t = 0
         for rec in lzma.decompress(f.read(self.length)).decode().split(','):
             if rec:
                 w, x, y, z = rec.split('|')
-                w = int(w)
+                w, x, y, z = int(w), float(x), float(y), int(z)
                 t += w
-                if w > 0:
-                    e = ReplayPoint(float(x), float(y), Buttons(int(z)))
-                    self.replay[last_t:t] = [e] * w
-                last_t = t
+                if flip:
+                    y = 384 - y
+                p = ReplayPoint(t, x, y, z)
+                replay.append(p)
 
     def has_mod(self, mod):
         return self.mods & mod == mod
@@ -118,10 +107,10 @@ class Replay:
 
     def __lt__(self, other): return self._key() < other._key()
 
-def read_file(f):
+def read_file(f, flip_hr=False):
     if isinstance(f, str):
         with open(f, 'rb') as ff:
-            return read_file(ff)
+            return read_file(ff, flip_hr)
     r = Replay()
-    r.read_file(f)
+    r.read_file(f, flip_hr)
     return r
