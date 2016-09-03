@@ -26,13 +26,17 @@ parser = argparse.ArgumentParser(description='osu! replay visualizer')
 parser.add_argument('path', help='folder containing replays and mp3')
 parser.add_argument('-t', '--tail', help='tail length', type=int, default=100)
 parser.add_argument('-r', '--radius', help='circle radius', type=int, default=5)
-parser.add_argument('-n', '--no-wipe', help="don't wipe the screen each frame", dest='wipe', action='store_false')
+parser.add_argument('-w', '--no-wipe', help="don't wipe the screen each frame",
+                    dest='wipe', action='store_false')
+parser.add_argument('-f', '--no-flip', help="don't flip hr plays",
+                    dest='flip', action='store_false')
 args = parser.parse_args()
 
 pathname = args.path
 tail = args.tail
 radius = args.radius
 wipe = args.wipe
+flip = args.flip
 
 files = glob(join(pathname, '**/*.osr'), recursive=True)
 if len(files) == 0:
@@ -41,7 +45,7 @@ if len(files) == 0:
 replays = []
 
 for name in files:
-    replay = osr.read_file(name, True)
+    replay = osr.read_file(name, flip)
     replays.append(replay)
 
 replays.sort()
@@ -52,14 +56,14 @@ for r in replays:
     n -= 1
 print('read %d replays' % len(replays))
 
-state = recordclass('state', 'replay color x y z trail')
+State = recordclass('State', 'replay color x y z trail')
 states = []
 
 for replay in replays:
     # we don't need anything else on the replay object so remove the references
     replay = replay.replay
     color = WHITE if len(replays) == 1 else pick_color()
-    states.append(state(replay, color, 0, 0, 0, deque()))
+    states.append(State(replay, color, 0, 0, 0, deque()))
 
 del replays
 
@@ -67,9 +71,8 @@ HEIGHT = 768
 WIDTH = 1366
 KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(states))
 
-# Only works with Height of 768 and Width of 1366 if you want different size you will have to work out yourself
-# This Change Centers the play on the window just like in Osu client
-# Helps with easy overlay for video
+# This centers the play on the window just like in osu! client, which helps with
+# easy overlay for video. It only works for 1366x768 though
 X_CHANGE = 273
 Y_CHANGE = 89
 SCALE = 1.551
@@ -137,12 +140,13 @@ while pygame.mixer.music.get_busy():
             state.x, state.y, state.z = p.x, p.y, p.z
             circles.append((scale(state.x, state.y), color))
             trail.append(p)
-        else:
-            circles.append((scale(state.x, state.y), color))
+        o = (scale(state.x, state.y), color)
+        if o not in circles:
+            circles.append(o)
         while trail and (pos - trail[0].t) > tail:
             trail.popleft()
-        points = [scale(p.x, p.y) for p in trail]
-        if len(points) > 1:
+        if len(trail) > 1:
+            points = [scale(p.x, p.y) for p in trail]
             lines.append((points, color))
         y = i * KEYSIZE
         for j, o in enumerate(osr.keys(state.z)):
