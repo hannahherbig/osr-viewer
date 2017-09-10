@@ -1,3 +1,7 @@
+Note: I am not going to make any changes to this unless I suddenly gain interest
+in this game again.  Anyone is free to fork this and do whatever they want
+under the terms of the MIT license.
+
 # osr stuff
 
 [![Kokou no Sousei](http://img.youtube.com/vi/jCK9dTT6hEA/0.jpg)](https://www.youtube.com/watch?v=jCK9dTT6hEA "Kokou no Sousei")
