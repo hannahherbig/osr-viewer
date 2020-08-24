@@ -1,33 +1,41 @@
-import struct
-import lzma
-import time
-import sys
+import argparse
 import glob
+import math
 import os.path
+import random
+import sys
+import time
+from collections import deque
+
 import PIL.Image
 import PIL.ImageDraw
-import random
-import argparse
-from collections import deque
 from recordclass import recordclass
-import math
+
 import osr
 
-BLACK = (  0,   0,   0)
-GRAY  = (100, 100, 100)
+BLACK = (0, 0, 0)
+GRAY = (100, 100, 100)
 WHITE = (255, 255, 255)
+
 
 def pick_color():
     return tuple(random.randrange(64, 256) for i in range(3))
 
-parser = argparse.ArgumentParser(description='osu! replay visualizer')
-parser.add_argument('path', help='folder containing replays and mp3')
-parser.add_argument('-t', '--tail', help='tail length', type=int, default=100)
-parser.add_argument('-r', '--radius', help='circle radius', type=int, default=5)
-parser.add_argument('-w', '--no-wipe', help="don't wipe the screen each frame",
-                    dest='wipe', action='store_false')
-parser.add_argument('-f', '--no-flip', help="don't flip hr plays",
-                    dest='flip', action='store_false')
+
+parser = argparse.ArgumentParser(description="osu! replay visualizer")
+parser.add_argument("path", help="folder containing replays and mp3")
+parser.add_argument("-t", "--tail", help="tail length", type=int, default=100)
+parser.add_argument("-r", "--radius", help="circle radius", type=int, default=5)
+parser.add_argument(
+    "-w",
+    "--no-wipe",
+    help="don't wipe the screen each frame",
+    dest="wipe",
+    action="store_false",
+)
+parser.add_argument(
+    "-f", "--no-flip", help="don't flip hr plays", dest="flip", action="store_false"
+)
 args = parser.parse_args()
 
 pathname = args.path
@@ -38,9 +46,9 @@ flip = args.flip
 
 basename = os.path.basename(pathname)
 
-files = glob.glob(os.path.join(pathname, '*.osr'))
+files = glob.glob(os.path.join(pathname, "*.osr"))
 if len(files) == 0:
-    sys.exit('no replays to read')
+    sys.exit("no replays to read")
 
 replays = []
 
@@ -52,11 +60,11 @@ replays.sort()
 
 n = len(replays)
 for r in replays:
-    print('%2d. %15s - %d' % (n, r.player, r.score))
+    print("%2d. %15s - %d" % (n, r.player, r.score))
     n -= 1
-print('read %d replays' % len(replays))
+print("read %d replays" % len(replays))
 
-State = recordclass('State', 'replay color x y z trail')
+State = recordclass("State", "replay color x y z trail")
 states = []
 
 for replay in replays:
@@ -69,12 +77,14 @@ del replays
 
 HEIGHT = 768
 WIDTH = 1366
-KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(states))
+KEYSIZE = min((WIDTH - 1024) / 5, HEIGHT / len(states))
+
 
 def scale(x, y):
-    return x*2, y*2
+    return x * 2, y * 2
 
-interval = 1000/60
+
+interval = 1000 / 60
 frame = 0
 last_pos = 0
 done = False
@@ -87,19 +97,19 @@ for state in states:
         if p.t > msec:
             msec = p.t
 
-frames = math.ceil(msec/interval)
+frames = math.ceil(msec / interval)
 
-sec = frames/60
-print('%d frames total -> %dm%02ds' % ((frames,) + divmod(sec, 60)))
+sec = frames / 60
+print("%d frames total -> %dm%02ds" % ((frames,) + divmod(sec, 60)))
 
 if wipe:
-    im = PIL.Image.new('RGB', (WIDTH, HEIGHT))
+    im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
 
 for frame in range(frames):
     clock.append(time.clock())
-    pos = int(frame*interval)
+    pos = int(frame * interval)
     if not wipe:
-        im = PIL.Image.new('RGB', (WIDTH, HEIGHT))
+        im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
     draw = PIL.ImageDraw.Draw(im)
 
     lines = []
@@ -126,7 +136,7 @@ for frame in range(frames):
         y = i * KEYSIZE
         for j, o in enumerate(osr.keys(state.z)):
             x = WIDTH - KEYSIZE * 5 + j * KEYSIZE
-            rects.append(((x, y, x+KEYSIZE, y+KEYSIZE), color if o else BLACK))
+            rects.append(((x, y, x + KEYSIZE, y + KEYSIZE), color if o else BLACK))
 
     if tail:
         for points, color in lines:
@@ -134,17 +144,17 @@ for frame in range(frames):
 
     if radius:
         for (x, y), color in circles:
-            draw.ellipse((x-radius, y-radius, x+radius, y+radius), color, BLACK)
+            draw.ellipse((x - radius, y - radius, x + radius, y + radius), color, BLACK)
 
     for rect, color in rects:
         draw.rectangle(rect, color)
 
     del draw
 
-    im.save(os.path.join('out', '%s-%05d.tga' % (basename, frame)))
+    im.save(os.path.join("out", "%s-%05d.tga" % (basename, frame)))
 
     if frame % 10 == 0:
-        d = clock[-1]-clock[0]
+        d = clock[-1] - clock[0]
         if d:
-            fps = len(clock)/d
-            sys.stderr.write('%5d - %5.0f fps - %.4f\r' % (frame, fps, frame / frames))
+            fps = len(clock) / d
+            sys.stderr.write("%5d - %5.0f fps - %.4f\r" % (frame, fps, frame / frames))

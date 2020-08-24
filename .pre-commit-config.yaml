@@ -1,0 +1,29 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.2.0
+  hooks:
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: check-yaml
+  - id: check-toml
+  - id: check-merge-conflict
+  - id: check-json
+  - id: pretty-format-json
+  - id: check-ast
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.1.9
+  hooks:
+  - id: forbid-crlf
+  - id: remove-crlf
+- repo: https://github.com/ambv/black
+  rev: 19.10b0
+  hooks:
+  - id: black
+- repo: https://github.com/timothycrosley/isort
+  rev: 5.4.2
+  hooks:
+  - id: isort
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.8.3
+  hooks:
+  - id: flake8
