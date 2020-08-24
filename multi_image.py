@@ -106,7 +106,7 @@ if wipe:
     im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
 
 for frame in range(frames):
-    clock.append(time.clock())
+    clock.append(time.monotonic())
     pos = int(frame * interval)
     if not wipe:
         im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
