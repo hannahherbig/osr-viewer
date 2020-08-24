@@ -9,8 +9,8 @@ under the terms of the MIT license.
 This is a few things I was messing around with the osu! replay format and
 pygame. There's also a sort of library in `osr.py` for reading the maps.
 
-I made this with `Python 3.5` and `pygame 1.9.2b1` on Windows, and I haven't
-tested it elsewhere yet. But it might work.
+I am using [Poetry](https://python-poetry.org/) for dependencies, so you can
+just do `poetry install` after cloning the repo to start running things.
 
 ## multi_render.py
 This will read a bunch of replays at the same time and show them at the same
