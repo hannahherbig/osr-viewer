@@ -1,35 +1,45 @@
+import argparse
+import random
+import sys
+from collections import deque
+from glob import glob
+from os.path import join
+
 import pygame
 import pygame.gfxdraw
 from recordclass import recordclass
-import time
-import sys
-from glob import glob
-from os.path import join
-from collections import deque
-import random
-import argparse
+
 import osr
 
-BLACK = (  0,   0,   0)
-GRAY  = (100, 100, 100)
+BLACK = (0, 0, 0)
+GRAY = (100, 100, 100)
 WHITE = (255, 255, 255)
+
 
 def pick_color():
     return tuple(random.randrange(64, 256) for i in range(3))
 
+
 def quit():
-    print('\n')
+    print("\n")
     pygame.quit()
     sys.exit(42)
 
-parser = argparse.ArgumentParser(description='osu! replay visualizer')
-parser.add_argument('path', help='folder containing replays and mp3')
-parser.add_argument('-t', '--tail', help='tail length', type=int, default=100)
-parser.add_argument('-r', '--radius', help='circle radius', type=int, default=5)
-parser.add_argument('-w', '--no-wipe', help="don't wipe the screen each frame",
-                    dest='wipe', action='store_false')
-parser.add_argument('-f', '--no-flip', help="don't flip hr plays",
-                    dest='flip', action='store_false')
+
+parser = argparse.ArgumentParser(description="osu! replay visualizer")
+parser.add_argument("path", help="folder containing replays and mp3")
+parser.add_argument("-t", "--tail", help="tail length", type=int, default=100)
+parser.add_argument("-r", "--radius", help="circle radius", type=int, default=5)
+parser.add_argument(
+    "-w",
+    "--no-wipe",
+    help="don't wipe the screen each frame",
+    dest="wipe",
+    action="store_false",
+)
+parser.add_argument(
+    "-f", "--no-flip", help="don't flip hr plays", dest="flip", action="store_false"
+)
 args = parser.parse_args()
 
 pathname = args.path
@@ -38,9 +48,9 @@ radius = args.radius
 wipe = args.wipe
 flip = args.flip
 
-files = glob(join(pathname, '**/*.osr'), recursive=True)
+files = glob(join(pathname, "**/*.osr"), recursive=True)
 if len(files) == 0:
-    sys.exit('no replays to read')
+    sys.exit("no replays to read")
 
 replays = []
 
@@ -52,11 +62,11 @@ replays.sort()
 
 n = len(replays)
 for r in replays:
-    print('%2d. %15s - %d' % (n, r.player, r.score))
+    print("%2d. %15s - %d" % (n, r.player, r.score))
     n -= 1
-print('read %d replays' % len(replays))
+print("read %d replays" % len(replays))
 
-State = recordclass('State', 'replay color x y z trail')
+State = recordclass("State", "replay color x y z trail")
 states = []
 
 for replay in replays:
@@ -69,7 +79,7 @@ del replays
 
 HEIGHT = 768
 WIDTH = 1366
-KEYSIZE = min((WIDTH-1024)/5, HEIGHT / len(states))
+KEYSIZE = min((WIDTH - 1024) / 5, HEIGHT / len(states))
 
 # This centers the play on the window just like in osu! client, which helps with
 # easy overlay for video. It only works for 1366x768 though
@@ -77,14 +87,16 @@ X_CHANGE = 273
 Y_CHANGE = 89
 SCALE = 1.551
 
+
 def scale(x, y):
     return (x + X_CHANGE / SCALE) * SCALE, (y + Y_CHANGE / SCALE) * SCALE
+
 
 pygame.mixer.pre_init(44100)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
-pygame.mixer.music.load(*glob(join(pathname, '*.mp3')))
+pygame.display.set_caption("radius=%d tail=%d" % (radius, tail))
+pygame.mixer.music.load(*glob(join(pathname, "*.mp3")))
 pygame.mixer.music.play()
 pygame.mixer.music.set_volume(0.5)
 clock = pygame.time.Clock()
@@ -107,20 +119,20 @@ while pygame.mixer.music.get_busy():
                 quit()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1: # left mouse button
+            if event.button == 1:  # left mouse button
                 radius += 1
-            elif event.button == 3: # right mouse button
+            elif event.button == 3:  # right mouse button
                 radius = max(0, radius - 1)
-            elif event.button == 4: # scroll up
+            elif event.button == 4:  # scroll up
                 tail += 10
-            elif event.button == 5: # scroll down
+            elif event.button == 5:  # scroll down
                 tail = max(0, tail - 10)
-            if event.button == 2: # middle mouse button
+            if event.button == 2:  # middle mouse button
                 wipe = not wipe
-            pygame.display.set_caption('radius=%d tail=%d' % (radius, tail))
+            pygame.display.set_caption("radius=%d tail=%d" % (radius, tail))
 
         elif event.type == UPDATE_FPS:
-            sys.stderr.write('%5.0f fps\r' % clock.get_fps())
+            sys.stderr.write("%5.0f fps\r" % clock.get_fps())
 
     clock.tick()
     pos = pygame.mixer.music.get_pos()
