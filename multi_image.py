@@ -99,8 +99,8 @@ for state in states:
 
 frames = math.ceil(msec / interval)
 
-mins, secs = divmod(frames / 60, 60)
-print("%d frames total -> %dm%02ds" % (frames, mins, secs))
+mins, secs = divmod(frames // 60, 60)
+print(f"{frames} frames total -> {mins}m{secs:2d}s")
 
 im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
 
