@@ -99,11 +99,10 @@ for state in states:
 
 frames = math.ceil(msec / interval)
 
-sec = frames / 60
-print("%d frames total -> %dm%02ds" % ((frames,) + divmod(sec, 60)))
+mins, secs = divmod(frames / 60, 60)
+print("%d frames total -> %dm%02ds" % (frames, mins, secs))
 
-if wipe:
-    im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
+im = PIL.Image.new("RGB", (WIDTH, HEIGHT))
 
 for frame in range(frames):
     clock.append(time.monotonic())
