@@ -215,7 +215,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "recordclass"
-version = "0.14.2"
+version = "0.14.3"
 description = "Mutable variants of tuple (mutabletuple) and collections.namedtuple (recordclass), which support assignments and more memory saving variants (dataobject, structclass, litelist, ...)."
 category = "main"
 optional = false
@@ -303,7 +303,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "4dd12a70dbe5f636dc2e8189c4c1854b0b4d110a210e8ddd60035a3f572dd362"
+content-hash = "37a59ca39c84bfa805464579f44105655c76c288244885cab3594ee2c10ef206"
 
 [metadata.files]
 appdirs = [
@@ -449,17 +449,17 @@ pyyaml = [
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 recordclass = [
-    {file = "recordclass-0.14.2-cp27-cp27m-win32.whl", hash = "sha256:64272aef095c5a1802c4c89e07879a0ecb6c32fa62316f091ff22e2724027974"},
-    {file = "recordclass-0.14.2-cp27-cp27m-win_amd64.whl", hash = "sha256:76098654d1775e59049c324c9f57b3694ef3375ff5a7a09559d97bf5465bc766"},
-    {file = "recordclass-0.14.2-cp36-cp36m-win32.whl", hash = "sha256:2ee68c34956fc366c5757237a7d127eec6bd9fb840841bab5c29b156b989d15c"},
-    {file = "recordclass-0.14.2-cp36-cp36m-win_amd64.whl", hash = "sha256:3c5817c601031c67b0e93f36bd8158bff7f943924ae2822ee3944e7d8a53ef3b"},
-    {file = "recordclass-0.14.2-cp37-cp37m-win32.whl", hash = "sha256:37eba2954aca6928b477cb8b90b2cb09a45aa0c790c128ed80a1b6f708457248"},
-    {file = "recordclass-0.14.2-cp37-cp37m-win_amd64.whl", hash = "sha256:e4fbfed9938748d6ea5624a079c6273ccba36384fcf4556565fdb881972cfe70"},
-    {file = "recordclass-0.14.2-cp38-cp38-win32.whl", hash = "sha256:dfe77065ffb2ebf314f0af74c118b6f1ae05c5ffcded9d2e70e455668551f885"},
-    {file = "recordclass-0.14.2-cp38-cp38-win_amd64.whl", hash = "sha256:12d0a6ea0ee0bdcb1780cdc0b2034f85e13240eba28ede93a0cccf072b85dd2e"},
-    {file = "recordclass-0.14.2-cp39-cp39-win32.whl", hash = "sha256:1af035065ebeffe774a714641b4861415b211d2b698b7ab941a810da5eec848a"},
-    {file = "recordclass-0.14.2-cp39-cp39-win_amd64.whl", hash = "sha256:5e079845ec7f4b3d1bc875ee5fb506f1bbaada5c820d7f3c72dab07454eb90ae"},
-    {file = "recordclass-0.14.2.tar.gz", hash = "sha256:2c0b8551d3a4a2f388fe26697daa5f9e01bcf67df3683f7bc568cbb3fd94743a"},
+    {file = "recordclass-0.14.3-cp27-cp27m-win32.whl", hash = "sha256:016a70b9e1d93e184a065a23d9bd15387c154375a166fd8868db96f362d77d94"},
+    {file = "recordclass-0.14.3-cp27-cp27m-win_amd64.whl", hash = "sha256:c9941edde67077f95e83dfd69795b2bc6cff13e05ef537b4a57cddfb8fac55f9"},
+    {file = "recordclass-0.14.3-cp36-cp36m-win32.whl", hash = "sha256:867f94a6c96474e2b52d50359adbcd1eaf18202c11654b662022a700831dfb7d"},
+    {file = "recordclass-0.14.3-cp36-cp36m-win_amd64.whl", hash = "sha256:3ced6c8d7d34d573fd7f926b47b5cdb2875b986841f1464eb9d41777edb63f7e"},
+    {file = "recordclass-0.14.3-cp37-cp37m-win32.whl", hash = "sha256:2c7dd437b2d766954e0468bdd49e444f24fc82bb080f57a4901e3718c678fcf6"},
+    {file = "recordclass-0.14.3-cp37-cp37m-win_amd64.whl", hash = "sha256:3c885d6d92c3306846c36797a03712e7c9dea6cc01b61f45305a815c87ea5a0c"},
+    {file = "recordclass-0.14.3-cp38-cp38-win32.whl", hash = "sha256:b5c25065b5d2825122fd67ac43053033bd85c209b261264ca3e2460b8308336d"},
+    {file = "recordclass-0.14.3-cp38-cp38-win_amd64.whl", hash = "sha256:57ba80fe2b3fc61cd878b3cd90ca1445a48292baf5d154055d671dc76c521bc1"},
+    {file = "recordclass-0.14.3-cp39-cp39-win32.whl", hash = "sha256:8a99639842291349667133a0c4076b2e5e483c4628da342715072037902d5884"},
+    {file = "recordclass-0.14.3-cp39-cp39-win_amd64.whl", hash = "sha256:176af306e9b3a13a97b3e8e87228a2975f87173048ab5eafbd0ba9f2838cadb0"},
+    {file = "recordclass-0.14.3.tar.gz", hash = "sha256:f2a0a42ec1128be81e28b8ba82ef1a1dccc41efbec6ecf97866915649645222f"},
 ]
 regex = [
     {file = "regex-2020.7.14-cp27-cp27m-win32.whl", hash = "sha256:e46d13f38cfcbb79bfdb2964b0fe12561fe633caf964a77a5f8d4e45fe5d2ef7"},
