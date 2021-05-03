@@ -14,7 +14,7 @@ Pillow = "^8.2.0"
 black = "^21.4b2"
 flake8 = "^3.9.1"
 pre-commit = "^2.12.1"
-pyupgrade = "^2.13.0"
+pyupgrade = "^2.14.0"
 isort = "^5.8.0"
 
 [build-system]
