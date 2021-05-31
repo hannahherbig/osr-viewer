@@ -11,7 +11,7 @@ recordclass = "^0.14.3"
 Pillow = "^8.2.0"
 
 [tool.poetry.dev-dependencies]
-black = "^21.4b2"
+black = "^21.5b1"
 flake8 = "^3.9.2"
 pre-commit = "^2.13.0"
 pyupgrade = "^2.19.0"
