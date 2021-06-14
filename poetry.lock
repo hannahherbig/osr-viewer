@@ -198,7 +198,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyupgrade"
-version = "2.19.1"
+version = "2.19.4"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
@@ -305,7 +305,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "357b1145d0b3bd8380782b7f16b76c759244d327d5d17c08d7225bd09112c2b7"
+content-hash = "a776738c051f305341b9ba96e17b585948124ab051ad692f67b3893dd3554f30"
 
 [metadata.files]
 appdirs = [
@@ -456,8 +456,8 @@ pygame = [
     {file = "pygame-2.0.1.tar.gz", hash = "sha256:8b1e7b63f47aafcdd8849933b206778747ef1802bd3d526aca45ed77141e4001"},
 ]
 pyupgrade = [
-    {file = "pyupgrade-2.19.1-py2.py3-none-any.whl", hash = "sha256:d84807695d819e364238078169d50e6fcdf4609a9956fc68b433c9958e4ef5bb"},
-    {file = "pyupgrade-2.19.1.tar.gz", hash = "sha256:2b21f55472a862393ea5de0e2e5b560c0554ed0379d92d5fc68ed0e8a772a728"},
+    {file = "pyupgrade-2.19.4-py2.py3-none-any.whl", hash = "sha256:7bfb634a804d71a642dfb6e85283295953c0f990b8be55c0909c6155d88c5af6"},
+    {file = "pyupgrade-2.19.4.tar.gz", hash = "sha256:28525a24fa3f4f68389b157d3fa063c9b96d8e30f034614c17a4d95a0475d1d9"},
 ]
 pyyaml = [
     {file = "PyYAML-5.3.1-cp27-cp27m-win32.whl", hash = "sha256:74809a57b329d6cc0fdccee6318f44b9b8649961fa73144a98735b0aaf029f1f"},
