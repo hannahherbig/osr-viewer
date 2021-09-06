@@ -218,7 +218,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "recordclass"
-version = "0.15"
+version = "0.16"
 description = "Mutable variant of collections.namedtuple -- recordclass.recordclass, which support assignments, and other memory saving variants."
 category = "main"
 optional = false
@@ -314,7 +314,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "ada079d46971e2802cd4028064e3b301aeb1b75c1600d76d29ddcf8285c255ae"
+content-hash = "1d3f6f52a5282022e19f0210d3a6eba9582b70a406ef4dbfcb9f0c760cc58744"
 
 [metadata.files]
 appdirs = [
@@ -503,15 +503,15 @@ pyyaml = [
     {file = "PyYAML-5.3.1.tar.gz", hash = "sha256:b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"},
 ]
 recordclass = [
-    {file = "recordclass-0.15-cp36-cp36m-win32.whl", hash = "sha256:c2f6200d2f6987e23fbb0a33fa24e5c4199d365ea4a1f6c4ff6f24f7005f06b7"},
-    {file = "recordclass-0.15-cp36-cp36m-win_amd64.whl", hash = "sha256:dc084a2e37dadbb8e11b6c24a4ca12ebcc996a66fc2e3a0c28dc6accead29da6"},
-    {file = "recordclass-0.15-cp37-cp37m-win32.whl", hash = "sha256:989bc44c72cea1d51095d1a131677f694b95c6838c21bc180dfba6828202cd07"},
-    {file = "recordclass-0.15-cp37-cp37m-win_amd64.whl", hash = "sha256:8216b1ff032a3e18c1358bfb70559296f80d0ead1791fcad65cd518ffd560534"},
-    {file = "recordclass-0.15-cp38-cp38-win32.whl", hash = "sha256:e7e0555d2603d97c0cc218fec91fa9b932d1c0cad37644eca2f2a02fb121bcf3"},
-    {file = "recordclass-0.15-cp38-cp38-win_amd64.whl", hash = "sha256:327d4629ec1c224dddf954d8db08b8fddfda6a19ea2649a51452bfdc6ad69c9a"},
-    {file = "recordclass-0.15-cp39-cp39-win32.whl", hash = "sha256:185449b6265a56807e63aeb06ea10c7d252acb9ad574ea3cf7a0660ae1679edf"},
-    {file = "recordclass-0.15-cp39-cp39-win_amd64.whl", hash = "sha256:17f4972fefdbe2da6e5dc60ca58e915bb6e636525a0143382c98bbad80d11ba4"},
-    {file = "recordclass-0.15.tar.gz", hash = "sha256:c06718d4668e08885cf500d5f3966e50837ce1a84adb2dcdcb6bff38702592d1"},
+    {file = "recordclass-0.16-cp36-cp36m-win32.whl", hash = "sha256:7cdd4009c425692faf585865a87160a3dc3fa59d1843360aa9dc22cc41be6408"},
+    {file = "recordclass-0.16-cp36-cp36m-win_amd64.whl", hash = "sha256:b7ac5ca411a0c53aa774926a06d16d963537e8dcccb26445b98fc8267a68772c"},
+    {file = "recordclass-0.16-cp37-cp37m-win32.whl", hash = "sha256:1dde49a84d1d5de0b87464a0783f883b0076ebb7017d06f2f870119d4e4d14d0"},
+    {file = "recordclass-0.16-cp37-cp37m-win_amd64.whl", hash = "sha256:0ada8aa61061ce15b8614c06f8e7927b19179ca05afd63afe98650db2cf5d5f8"},
+    {file = "recordclass-0.16-cp38-cp38-win32.whl", hash = "sha256:1246c7e127f252605d52ad230cc1fc0da7315d00c7cb8f4a99999b6f9d1a8fc8"},
+    {file = "recordclass-0.16-cp38-cp38-win_amd64.whl", hash = "sha256:13f265696f3825c178ddc59413716a73f1fdf42a35929a8a116c6a8f56c0d549"},
+    {file = "recordclass-0.16-cp39-cp39-win32.whl", hash = "sha256:3ed0e7c5215433aa843c8e22035b3f28889393c1605d6fc57c14b6c4f5265089"},
+    {file = "recordclass-0.16-cp39-cp39-win_amd64.whl", hash = "sha256:1ebe40a13613407cef18d0fc03682572f709a23d62003e5a898736dfcbfe1cf2"},
+    {file = "recordclass-0.16.tar.gz", hash = "sha256:4b69b09aacb46fc7390175e1b2892b3f28a73d6d78e2734befec7a983cea526b"},
 ]
 regex = [
     {file = "regex-2020.7.14-cp27-cp27m-win32.whl", hash = "sha256:e46d13f38cfcbb79bfdb2964b0fe12561fe633caf964a77a5f8d4e45fe5d2ef7"},
