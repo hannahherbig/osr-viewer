@@ -24,7 +24,7 @@ tomli = ">=0.2.6,<2.0.0"
 typed-ast = {version = ">=1.4.2", markers = "python_version < \"3.8\""}
 typing-extensions = [
     {version = ">=3.10.0.0", markers = "python_version < \"3.10\""},
-    {version = "!=3.10.0.1", markers = "python_version >= \"3.10\""},
+    {version = ">=3.10.0.0,<3.10.0.1 || >3.10.0.1", markers = "python_version >= \"3.10\""},
 ]
 
 [package.extras]
@@ -103,8 +103,8 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 zipp = ">=0.5"
 
 [package.extras]
-docs = ["sphinx", "rst.linker"]
-testing = ["packaging", "pep517", "importlib-resources (>=1.3)"]
+docs = ["rst.linker", "sphinx"]
+testing = ["importlib-resources (>=1.3)", "packaging", "pep517"]
 
 [[package]]
 name = "isort"
@@ -115,10 +115,10 @@ optional = false
 python-versions = ">=3.6.1,<4.0"
 
 [package.extras]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
-requirements_deprecated_finder = ["pipreqs", "pip-api"]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
+pipfile-deprecated-finder = ["pipreqs", "requirementslib"]
 plugins = ["setuptools"]
+requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "mccabe"
@@ -234,8 +234,8 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [[package]]
 name = "recordclass"
-version = "0.15"
-description = "Mutable variant of collections.namedtuple -- recordclass.recordclass, which support assignments, and other memory saving variants."
+version = "0.18.1.1"
+description = "Mutable variant of namedtuple -- recordclass, which support assignments, and other memory saving variants."
 category = "main"
 optional = false
 python-versions = "*"
@@ -313,7 +313,7 @@ six = ">=1.9.0,<2"
 
 [package.extras]
 docs = ["proselint (>=0.10.2)", "sphinx (>=3)", "sphinx-argparse (>=0.2.5)", "sphinx-rtd-theme (>=0.4.3)", "towncrier (>=19.9.0rc1)"]
-testing = ["coverage (>=5)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "pytest-xdist (>=1.31.0)", "packaging (>=20.0)", "xonsh (>=0.9.16)"]
+testing = ["coverage (>=5)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "packaging (>=20.0)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "pytest-xdist (>=1.31.0)", "xonsh (>=0.9.16)"]
 
 [[package]]
 name = "zipp"
@@ -324,13 +324,13 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["jaraco.itertools", "func-timeout"]
+docs = ["jaraco.packaging (>=3.2)", "rst.linker (>=1.9)", "sphinx"]
+testing = ["func-timeout", "jaraco.itertools"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "3042a99108f247b214d47e725d80a9cbc28618b17391c9b0d2f1180cc236a9e3"
+content-hash = "47134e77ee3dc70f5b55c88c49cfb3ba30f36190f08fb6b7acd0fb77c43f8cfb"
 
 [metadata.files]
 appdirs = [
@@ -536,15 +536,19 @@ pyyaml = [
     {file = "PyYAML-5.4.tar.gz", hash = "sha256:3c49e39ac034fd64fd576d63bb4db53cda89b362768a67f07749d55f128ac18a"},
 ]
 recordclass = [
-    {file = "recordclass-0.15-cp36-cp36m-win32.whl", hash = "sha256:c2f6200d2f6987e23fbb0a33fa24e5c4199d365ea4a1f6c4ff6f24f7005f06b7"},
-    {file = "recordclass-0.15-cp36-cp36m-win_amd64.whl", hash = "sha256:dc084a2e37dadbb8e11b6c24a4ca12ebcc996a66fc2e3a0c28dc6accead29da6"},
-    {file = "recordclass-0.15-cp37-cp37m-win32.whl", hash = "sha256:989bc44c72cea1d51095d1a131677f694b95c6838c21bc180dfba6828202cd07"},
-    {file = "recordclass-0.15-cp37-cp37m-win_amd64.whl", hash = "sha256:8216b1ff032a3e18c1358bfb70559296f80d0ead1791fcad65cd518ffd560534"},
-    {file = "recordclass-0.15-cp38-cp38-win32.whl", hash = "sha256:e7e0555d2603d97c0cc218fec91fa9b932d1c0cad37644eca2f2a02fb121bcf3"},
-    {file = "recordclass-0.15-cp38-cp38-win_amd64.whl", hash = "sha256:327d4629ec1c224dddf954d8db08b8fddfda6a19ea2649a51452bfdc6ad69c9a"},
-    {file = "recordclass-0.15-cp39-cp39-win32.whl", hash = "sha256:185449b6265a56807e63aeb06ea10c7d252acb9ad574ea3cf7a0660ae1679edf"},
-    {file = "recordclass-0.15-cp39-cp39-win_amd64.whl", hash = "sha256:17f4972fefdbe2da6e5dc60ca58e915bb6e636525a0143382c98bbad80d11ba4"},
-    {file = "recordclass-0.15.tar.gz", hash = "sha256:c06718d4668e08885cf500d5f3966e50837ce1a84adb2dcdcb6bff38702592d1"},
+    {file = "recordclass-0.18.1.1-cp310-cp310-win32.whl", hash = "sha256:5ea34360f0525415fef6b63ad20764d73184093cbfb5f07794ef49e4da19a4ca"},
+    {file = "recordclass-0.18.1.1-cp310-cp310-win_amd64.whl", hash = "sha256:d86fdb2eceeeee54c6bacd3bfede8a33d9aa61075ba32b5ec158960cb54cc2e4"},
+    {file = "recordclass-0.18.1.1-cp311-cp311-win32.whl", hash = "sha256:e4948a1e5fb32c6b53afb56fb19ae6e127380ad023646df08417d32a822fb208"},
+    {file = "recordclass-0.18.1.1-cp311-cp311-win_amd64.whl", hash = "sha256:4e42e8a03e3295a8bbb3a1326671f46a05362c775bfc914aa0507504e2f6a45a"},
+    {file = "recordclass-0.18.1.1-cp36-cp36m-win32.whl", hash = "sha256:a116f5248c7e6bdd127ee56ac8c77e960f7dca80c529594ee7afed13f1d430ec"},
+    {file = "recordclass-0.18.1.1-cp36-cp36m-win_amd64.whl", hash = "sha256:249dc2a64397a9774377c02a024056ee82e33f4c4e0ab1c5289a9aeea8b556ac"},
+    {file = "recordclass-0.18.1.1-cp37-cp37m-win32.whl", hash = "sha256:aa3893fa9b35a5ec6da257a74ea9d9f4ce38c1120c89211b281bf03105010a87"},
+    {file = "recordclass-0.18.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:c4bee137e3f12b5c7153f99e539576ecb635385a19558ff09d922f69125afa9c"},
+    {file = "recordclass-0.18.1.1-cp38-cp38-win32.whl", hash = "sha256:473e1f59030ebba1e8aa88e93445ff718b9a6c40c79f5bb7a69c46130bae120a"},
+    {file = "recordclass-0.18.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:06abc12d98b7ee0e736925a012b0939b60f67b39260cae75fb71b4afb58a70fb"},
+    {file = "recordclass-0.18.1.1-cp39-cp39-win32.whl", hash = "sha256:931a8cf3f0a6bb189f9a78a1e23dbd25a97be70812c124751c72a6dab8f7fc85"},
+    {file = "recordclass-0.18.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:543f37ad9a5e050fc2b69982abc4da97d2bd349a9832ebe02ac982bc4a24f37f"},
+    {file = "recordclass-0.18.1.1.tar.gz", hash = "sha256:b0ad89f013798d71e8e480c69b4b59d07f10626c7f7ca33b77cfcca326d1f19f"},
 ]
 regex = [
     {file = "regex-2020.7.14-cp27-cp27m-win32.whl", hash = "sha256:e46d13f38cfcbb79bfdb2964b0fe12561fe633caf964a77a5f8d4e45fe5d2ef7"},
