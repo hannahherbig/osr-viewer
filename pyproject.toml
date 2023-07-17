@@ -7,7 +7,7 @@ authors = ["Andrew Herbig <notandrewherbig@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 pygame = "^2.1.2"
-recordclass = "^0.15"
+recordclass = "^0.19"
 Pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
