@@ -133,8 +133,7 @@ with open(path, "rb") as f:
     life_bar = parse_string(f)  # ms|life
     timestamp, length = struct.unpack("<QI", f.read(12))
     print(
-        dedent(
-            """
+        dedent("""
         Game mode   : %s
         Version     : %d
         Beatmap MD5 : %s
@@ -153,8 +152,7 @@ with open(path, "rb") as f:
         Life        : %s
         Timestamp   : %d
         Length      : %d
-    """
-        )
+    """)
         % (
             MODES[mode],
             version,
